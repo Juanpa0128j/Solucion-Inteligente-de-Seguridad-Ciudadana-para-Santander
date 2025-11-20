@@ -92,17 +92,6 @@ Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander/
 
    Reemplaza `TU_TOKEN_AQUI` con tu token real obtenido de [datos.gov.co](https://www.datos.gov.co).
 
-5. **Ejecutar notebooks en orden**
-
-   ```bash
-   jupyter notebook
-   ```
-
-   Abrir y ejecutar en este orden:
-   1. `eda.ipynb` - Extracción y análisis exploratorio (genera carpeta `datasets/`)
-   2. `pipelines.ipynb` - Limpieza y transformación de datos
-   3. `models.ipynb` [WIP] - Entrenamiento de modelos predictivos
-
 ## 📈 Principales Hallazgos del EDA
 
 ### Problemas de Calidad Detectados
@@ -259,7 +248,7 @@ Usar prefijos descriptivos según el tipo de cambio:
 └── utils.py               # Funciones auxiliares
 ```
 
-### 4. **Nomenclatura de Archivos**
+### **Nomenclatura de Archivos**
 
 - **Notebooks:** Minúsculas, palabras separadas por guión
 - **Extensión:** `.ipynb` para notebooks, `.py` para módulos
@@ -279,7 +268,7 @@ modelsML.ipynb             # camelCase
 Models ML.ipynb            # Espacios
 ```
 
-### 5. **Comentarios y Documentación**
+### **Comentarios y Documentación**
 
 - Usar comentarios cuando la lógica no es obvia
 - Documentar funciones con docstrings
