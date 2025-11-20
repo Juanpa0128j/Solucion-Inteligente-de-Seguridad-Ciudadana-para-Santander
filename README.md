@@ -10,10 +10,20 @@ Los resultados del análisis revelaron **39 problemas de calidad de datos** dist
 
 ```
 Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander/
-├── .env                    # Variables de entorno (AppToken para API)
-├── .gitignore             # Archivos excluidos de control de versiones
-├── eda.ipynb              # Notebook principal con análisis exploratorio completo
-└── README.md              # Este archivo
+├── datasets/              # Carpeta con datasets descargados en formato CSV (ejecutar eda.ipynb para generación automática)
+│   ├── delitos_bucaramanga.csv
+│   ├── info_delictiva_bucaramanga.csv
+│   ├── delitos_sexuales.csv
+│   ├── violencia_intrafamiliar.csv
+│   ├── hurto_modalidades.csv
+│   └── metadata.json
+├── .env                   # Variables de entorno (AppToken para API)
+├── .gitignore            # Archivos excluidos de control de versiones
+├── eda.ipynb             # Notebook: Análisis Exploratorio de Datos completo
+├── pipelines.ipynb       # Notebook: Pipelines de limpieza y preprocesamiento
+├── models.ipynb          # Notebook: Modelos de Machine Learning
+├── requirements.txt      # Dependencias del proyecto
+└── README.md             # Este archivo
 ```
 
 ## 📊 Datasets Analizados
@@ -40,12 +50,14 @@ Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander/
 ### Instalación
 
 1. **Clonar el repositorio**
+
    ```bash
    git clone https://github.com/Juanpa0128j/Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander.git
    cd Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander
    ```
 
 2. **Crear entorno virtual (recomendado)**
+
    ```bash
    # En Linux/macOS
    python3 -m venv venv
@@ -57,19 +69,39 @@ Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander/
    ```
 
 3. **Instalar dependencias**
+
    ```bash
-   pip install pandas numpy requests matplotlib seaborn python-dotenv jupyter
+   pip install -r requirements.txt
    ```
+
+   Esto instalará todas las dependencias necesarias incluyendo:
+   - pandas, numpy (análisis de datos)
+   - matplotlib, seaborn (visualización)
+   - scikit-learn (machine learning y pipelines)
+   - requests (consumo de APIs)
+   - python-dotenv (variables de entorno)
+   - jupyter (notebooks interactivos)
 
 4. **Configurar AppToken**
 
-   
    Crea un archivo `.env` en la raíz del proyecto:
+
    ```bash
    echo "AppToken=TU_TOKEN_AQUI" > .env
    ```
-   
-   Reemplaza `TU_TOKEN_AQUI` con tu token real.
+
+   Reemplaza `TU_TOKEN_AQUI` con tu token real obtenido de [datos.gov.co](https://www.datos.gov.co).
+
+5. **Ejecutar notebooks en orden**
+
+   ```bash
+   jupyter notebook
+   ```
+
+   Abrir y ejecutar en este orden:
+   1. `eda.ipynb` - Extracción y análisis exploratorio (genera carpeta `datasets/`)
+   2. `pipelines.ipynb` - Limpieza y transformación de datos
+   3. `models.ipynb` [WIP] - Entrenamiento de modelos predictivos
 
 ## 📈 Principales Hallazgos del EDA
 
@@ -124,10 +156,12 @@ Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander/
 ## 🗺️ Estrategia de Geocodificación
 
 ### Problema
+
 - 6,363 registros (4.71%) con coordenadas erróneas ("xx.xxxx", "-yy.yyyy")
 - Reemplazados con valores nulos (NaN)
 
 ### Solución
+
 1. **Calcular centroides por barrio** usando los 128,713 registros con coordenadas válidas
 2. **Imputar coordenadas** para registros sin coordenadas usando centroide del barrio
 3. **Validar rango geográfico:**
@@ -141,6 +175,7 @@ Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander/
 - **Pandas** - Manipulación y análisis de datos
 - **NumPy** - Operaciones numéricas
 - **Matplotlib & Seaborn** - Visualización de datos
+- **Scikit-learn** - Pipelines de preprocesamiento y modelos ML
 - **Requests** - Consumo de APIs SODA
 - **Python-dotenv** - Gestión de variables de entorno
 - **Jupyter Notebook** - Entorno de desarrollo interactivo
@@ -154,6 +189,101 @@ El proyecto utiliza la **API SODA (Socrata Open Data API)** de [datos.gov.co](ht
 - **Paginación:** Límite máximo de 50,000 registros por request
 - **Filtros:** Soporte de cláusulas WHERE con SoQL
 - **Ordenamiento:** Por ID para consistencia en paginación
+
+## 🛠️ Flujo de Trabajo del Proyecto
+
+### 1. Extracción y Análisis Exploratorio (`eda.ipynb`)
+
+- Conexión a APIs de datos.gov.co mediante SODA API
+- Extracción de 330,184 registros de 5 datasets
+- Análisis estructural, temporal y geográfico
+- Detección de 39 problemas de calidad de datos
+- **Generación de carpeta `datasets/`** con archivos CSV y metadata
+- Informe ejecutivo con decisiones de preprocesamiento
+
+### 2. Limpieza y Transformación (`pipelines.ipynb`)
+
+- Carga de datasets desde carpeta `datasets/`
+- Transformadores personalizados para:
+  - Conversión de tipos de datos (object → float, datetime)
+  - División de fechas en componentes (año, mes, día)
+  - One-Hot Encoding de variables categóricas
+- Pipelines de scikit-learn configurables por dataset
+- Datos transformados listos para modelado
+
+### 3. Modelado Predictivo (`models.ipynb`) [WIP]
+
+- Entrenamiento de modelos de machine learning
+- Evaluación y validación de resultados
+- Análisis de importancia de features
+
+## 📋 Lineamientos de Código
+
+Para mantener la calidad y consistencia del código, se deben seguir estas convenciones:
+
+### **Mensajes de Commit**
+
+Usar prefijos descriptivos según el tipo de cambio:
+
+- `feat:` - Nueva funcionalidad
+  ```
+  feat: add geocoding pipeline for missing coordinates
+  ```
+- `fix:` - Corrección de errores
+  ```
+  fix: correct date parsing for delitos_sexuales dataset
+  ```
+- `chore:` - Tareas de mantenimiento, configuración
+  ```
+  chore: update requirements.txt with scikit-learn
+  ```
+- `docs:` - Cambios en documentación
+  ```
+  docs: update README with pipeline workflow
+  ```
+- `refactor:` - Refactorización de código sin cambiar funcionalidad
+  ```
+  refactor: extract data loading into separate function
+  ```
+- `style:` - Cambios de formato, espacios, etc.
+  ```
+  style: format code with black formatter
+  ```
+
+```
+✅ Estructura recomendada:
+├── eda.ipynb              # Análisis exploratorio
+├── pipelines.ipynb        # Preprocesamiento
+├── models-ml.ipynb        # Modelos ML
+├── feature-engineering.ipynb  # Ingeniería de features
+└── utils.py               # Funciones auxiliares
+```
+
+### 4. **Nomenclatura de Archivos**
+
+- **Notebooks:** Minúsculas, palabras separadas por guión
+- **Extensión:** `.ipynb` para notebooks, `.py` para módulos
+
+```python
+# ✅ Correcto
+eda.ipynb
+pipelines.ipynb
+models-ml.ipynb
+feature-engineering.ipynb
+data-visualization.ipynb
+
+# ❌ Incorrecto
+EDA.ipynb                  # Mayúsculas
+Pipelines_Data.ipynb       # Guión bajo
+modelsML.ipynb             # camelCase
+Models ML.ipynb            # Espacios
+```
+
+### 5. **Comentarios y Documentación**
+
+- Usar comentarios cuando la lógica no es obvia
+- Documentar funciones con docstrings
+- Mantener código limpio y auto-explicativo
 
 ## 📝 Notas Importantes
 
@@ -189,7 +319,7 @@ Este proyecto utiliza datos abiertos del Gobierno de Colombia disponibles bajo l
 
 ---
 
-**Última actualización:** Noviembre 17, 2025
+**Última actualización:** Noviembre 20, 2025
 
-**Versión del Análisis:** 1.0
+**Versión del Análisis:** 1.1
 
