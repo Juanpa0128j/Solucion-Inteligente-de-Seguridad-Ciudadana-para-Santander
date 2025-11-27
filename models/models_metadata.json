@@ -1,5 +1,5 @@
 {
-  "fecha_entrenamiento": "2025-11-20T16:51:18.252262",
+  "fecha_entrenamiento": "2025-11-26T23:00:51.414775",
   "modelos": {
     "temporal": {
       "archivo": "prophet_model.pkl",
@@ -15,35 +15,30 @@
       "dbscan": "dbscan_model.pkl",
       "kde": "kde_model.pkl",
       "scaler": "scaler_coords.pkl",
-      "n_hotspots": 68
+      "n_hotspots": 594
     },
     "riesgo": {
       "archivo": "xgboost_model.pkl",
       "tipo": "XGBClassifier",
-      "n_features": 17,
+      "n_features": 12,
       "feature_names": [
-        "año",
-        "mes",
-        "dia_semana",
-        "fin_de_semana",
-        "trimestre",
-        "semana_año",
-        "cluster_id",
-        "en_hotspot",
-        "armas_medios_encoded",
-        "barrios_hecho_encoded",
-        "sexo_encoded",
+        "year",
+        "month",
+        "dow",
+        "is_weekend",
+        "week_of_year",
+        "latitud",
+        "longitud",
+        "count_lag1",
         "delitos_7d",
         "delitos_30d",
-        "barrio_delitos_count",
-        "edad_normalizada",
-        "count_by_barrios_hecho",
-        "count_by_nom_com"
+        "zone_cluster_id",
+        "barrios_encoded"
       ],
       "metricas_test": {
-        "accuracy": 0.7459720428900242,
-        "f1_score": 0.6341660603120705,
-        "roc_auc": 0.7316206937374216
+        "accuracy": 0.9479170998821654,
+        "f1_score": 0.7236890490549386,
+        "roc_auc": 0.9810014000753015
       }
     }
   },
