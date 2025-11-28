@@ -329,7 +329,7 @@ Este proyecto utiliza datos abiertos del Gobierno de Colombia disponibles bajo l
 
 ---
 
-**Última actualización:** Noviembre 27, 2025
+**Última actualización:** Noviembre 28, 2025
 
-**Versión del Análisis:** 1.2
+**Versión:** 1.3
 
