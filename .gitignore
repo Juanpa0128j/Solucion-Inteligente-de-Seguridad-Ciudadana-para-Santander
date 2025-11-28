@@ -1,5 +1,8 @@
 .env
 .venv/
 *.geojson
-datasets/
 *.parquet
+*.pkl
+*.csv
+datasets/
+models/

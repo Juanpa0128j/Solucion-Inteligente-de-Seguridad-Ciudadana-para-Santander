@@ -2,29 +2,37 @@
 
 ## 📋 Descripción del Proyecto
 
-Este proyecto presenta un **Análisis Exploratorio de Datos (EDA) exhaustivo** sobre la seguridad ciudadana en el departamento de Santander, Colombia. Se analizaron **330,184 registros** provenientes de 5 datasets de datos abiertos del gobierno colombiano, abarcando un período de 15 años (2010-2025). El análisis incluyó datasets municipales de Bucaramanga (40 Delitos y 150 Información Delictiva) y datasets nacionales de la Policía Nacional (Delitos Sexuales, Violencia Intrafamiliar y Hurto por Modalidades), todos filtrados para el departamento de Santander. Durante el EDA se identificaron y corrigieron problemas críticos de calidad de datos, incluyendo 6,363 coordenadas geográficas erróneas, 1,904 registros duplicados, y valores faltantes en variables demográficas clave.
+Este repositorio contiene la solución al reto "Ecosistema de Datos" del Ministerio de las TIC de Colombia. Implementa un flujo reproducible para extraer, limpiar, modelar y poner a prueba una solución de seguridad ciudadana para el departamento de Santander.
 
-Los resultados del análisis revelaron **39 problemas de calidad de datos** distribuidos en 6 categorías principales: coordenadas geográficas erróneas (4.71% del dataset Bucaramanga), valores "NO REPORTA" en hasta el 86.73% de registros para grupo etario en delitos sexuales, inconsistencias en tipos de datos (columnas numéricas almacenadas como texto), y duplicados en datasets nacionales. Se establecieron **decisiones estratégicas de preprocesamiento** que incluyen: (1) geocodificación mediante centroides de barrios para recuperar el 95% de registros sin coordenadas válidas, (2) imputación diferenciada según prevalencia (alta >20%, media 5-20%, baja <5%), y (3) definición de granularidad temporal variable (mensual para Bucaramanga, diaria para datasets nacionales). El informe ejecutivo prioriza acciones en 3 fases: correcciones críticas (semana 1), geocodificación y validación (semana 2), e integración con datos externos (semana 3+).
+Resumen breve (330,184 registros procesados, 2010–2025):
+
+- Extracción y EDA: ingesta desde 5 fuentes públicas (municipales y nacionales), detección y corrección de problemas de calidad, y exportación de CSVs con metadata.
+- Pipelines: transformadores reproducibles (parsing robusto, `ObjectToFloatTransformer`, variables temporales), generación de Parquet procesados listos para modelado.
+- Modelado Bucaramanga: modelos temporales (Prophet/SARIMA), análisis espacial (DBSCAN, KDE), hotspot detection y clasificación de riesgo (XGBoost); resultados y artefactos persistidos en `models/`.
+- Modelado Departamento: grilla espacial, agregación a zonas, modelos de conteo (Negative Binomial, Gaussian Process, XGBoost Poisson) y métricas de ranking de hotspots; objetos entrenados guardados para demo.
+- Chatbot RAG (opcional): pipeline de ingestión de PDFs, chunking, embeddings (`sentence-transformers`) e indexación persistente en Chroma (`vectores/`) para respuestas con contexto usando LLMs.
+
+Durante el EDA se identificaron y corrigieron problemas críticos de calidad (por ejemplo, 6,363 coordenadas erróneas y 1,904 duplicados) y se definieron reglas de preprocesamiento (geocodificación por centroide de barrio, imputaciones por prevalencia, y validación de rangos geográficos).
 
 ## 🗂️ Estructura del Proyecto
 
-```
+```text
 Solucion-Inteligente-de-Seguridad-Ciudadana-para-Santander/
-├── datasets/              # Carpeta con datasets descargados en formato CSV (ejecutar eda.ipynb para generación automática)
-│   ├── delitos_bucaramanga.csv
-│   ├── info_delictiva_bucaramanga.csv
-│   ├── delitos_sexuales.csv
-│   ├── violencia_intrafamiliar.csv
-│   ├── hurto_modalidades.csv
-│   └── metadata.json
-├── .env                   # Variables de entorno (AppToken para API)
-├── .gitignore            # Archivos excluidos de control de versiones
-├── eda.ipynb             # Notebook: Análisis Exploratorio de Datos completo
-├── pipelines.ipynb       # Notebook: Pipelines de limpieza y preprocesamiento
-├── models.ipynb          # Notebook: Modelos de Machine Learning
-├── requirements.txt      # Dependencias del proyecto
-└── README.md             # Este archivo
-```
+├── datasets/              # CSVs originales y metadata (generados por `eda.ipynb`)
+├── datasets/processed/    # Parquet procesados (generados por `pipelines.ipynb`)
+├── models/                # Modelos y artefactos pre-entrenados (joblib, npy, csv)
+├── vectores/              # Base de datos Chroma persistente (chatbot)
+├── barrios_bucaramanga.geojson
+├── .env                   # Variables de entorno (AppToken, LANGCHAIN_API_KEY)
+├── .gitignore
+├── eda.ipynb              # Notebook: extracción y análisis exploratorio
+├── pipelines.ipynb        # Notebook: limpieza y feature engineering → Parquet
+├── models_bucaramanga.ipynb # Notebook: modelos y análisis para Bucaramanga
+├── models_depto.ipynb     # Notebook: modelos a nivel departamental (grilla y conteos)
+├── chatbot.ipynb          # Notebook: pipeline RAG + Chroma para demo documental
+├── requirements.txt
+└── README.md
+``` 
 
 ## 📊 Datasets Analizados
 
@@ -206,73 +214,61 @@ El proyecto utiliza la **API SODA (Socrata Open Data API)** de [datos.gov.co](ht
 - Evaluación y validación de resultados
 - Análisis de importancia de features
 
-## 📋 Lineamientos de Código
+## ⚡ Demo rápido (usa modelos pre-entrenados)
 
-Para mantener la calidad y consistencia del código, se deben seguir estas convenciones:
+Se proveen artefactos pre-entrenados en la carpeta `models/` para acelerar demostraciones y evitar entrenamientos costosos (especialmente el muestreo de Stan). Los notebooks están preparados para *cargar* estos modelos cuando existen y así mostrar resultados reproducibles en minutos.
 
-### **Mensajes de Commit**
+- **Modelos disponibles (ejemplos):** `models/nb_res_obj.joblib`, `models/gp_obj.joblib`, `models/xgb_model.joblib`, `models/density_grid.npy`, `models/hotspots_info.csv`.
+- **Comportamiento para demo:** los notebooks intentan cargar modelos guardados; si los encuentran, saltan los bloques de entrenamiento (incluyendo cualquier bloque de Stan). Por tanto, para demos rápidos, no es necesario ejecutar bloques de muestreo ni reentrenar.
 
-Usar prefijos descriptivos según el tipo de cambio:
+Requisitos previos para el demo rápido:
 
-- `feat:` - Nueva funcionalidad
-  ```
-  feat: add geocoding pipeline for missing coordinates
-  ```
-- `fix:` - Corrección de errores
-  ```
-  fix: correct date parsing for delitos_sexuales dataset
-  ```
-- `chore:` - Tareas de mantenimiento, configuración
-  ```
-  chore: update requirements.txt with scikit-learn
-  ```
-- `docs:` - Cambios en documentación
-  ```
-  docs: update README with pipeline workflow
-  ```
-- `refactor:` - Refactorización de código sin cambiar funcionalidad
-  ```
-  refactor: extract data loading into separate function
-  ```
-- `style:` - Cambios de formato, espacios, etc.
-  ```
-  style: format code with black formatter
-  ```
-
-```
-✅ Estructura recomendada:
-├── eda.ipynb              # Análisis exploratorio
-├── pipelines.ipynb        # Preprocesamiento
-├── models-ml.ipynb        # Modelos ML
-├── feature-engineering.ipynb  # Ingeniería de features
-└── utils.py               # Funciones auxiliares
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+# (opcional para chatbot) pip install sentence-transformers chromadb langchain google-generativeai pypdf
 ```
 
-### **Nomenclatura de Archivos**
+Variables de entorno necesarias:
 
-- **Notebooks:** Minúsculas, palabras separadas por guión
-- **Extensión:** `.ipynb` para notebooks, `.py` para módulos
+- `AppToken` : token de datos.gov.co (necesario si ejecutas extracción desde `eda.ipynb`).
+- `LANGCHAIN_API_KEY` : (opcional) clave para Gemini si quieres probar el chatbot RAG.
 
-```python
-# ✅ Correcto
-eda.ipynb
-pipelines.ipynb
-models-ml.ipynb
-feature-engineering.ipynb
-data-visualization.ipynb
+Pasos mínimos de demo (5–8 minutos):
 
-# ❌ Incorrecto
-EDA.ipynb                  # Mayúsculas
-Pipelines_Data.ipynb       # Guión bajo
-modelsML.ipynb             # camelCase
-Models ML.ipynb            # Espacios
+1. Activar el entorno virtual y asegurarse de dependencias instaladas.
+2. Colocar `.env` con `AppToken` si vas a ejecutar extracción; para demo rápido no es obligatorio si ya existen los CSV en `datasets/`.
+3. Abrir `models_bucaramanga.ipynb` y ejecutar las celdas iniciales hasta la sección **Load pre-trained models / Inference** (estas celdas cargan artefactos desde `models/`).
+4. Ejecutar la celda de forecast (Prophet/serie temporal) y la celda de análisis espacial (DBSCAN/KDE) — ambas usarán modelos/artefactos guardados y generarán gráficos y el `hotspots_df` sin reentrenar.
+5. Abrir `models_depto.ipynb` y ejecutar la sección de **Load aggregates & Load models** para mostrar métricas (Precision@K, top-pct) y predicciones guardadas (`ensemble_preds.parquet`).
+6. (Opcional) Abrir `chatbot.ipynb`, colocar PDFs en `data/`, instalar extras y ejecutar las celdas de chunking + `collection.add` para poblar `vectores/` y probar `responder("...")`.
+7. Validar salidas: revisar gráficos, `hotspots_info.csv` y los archivos en `models/`.
+
+Nota: Si deseas forzar reentrenamiento, puedes ejecutar explícitamente las celdas de entrenamiento; sin embargo, el demo oficial evita Stan/sampling (bloques comentados o saltables) y utiliza los objetos persistidos en `models/`.
+
+## 📦 Artifacts & Outputs (resumen)
+
+Lista rápida de los artefactos más relevantes y sus rutas relativas:
+
+- `datasets/*.csv` — datos sin procesar extraídos o exportados por `eda.ipynb`.
+- `datasets/processed/*_processed.parquet` — datos limpios y listos para modelado (generados por `pipelines.ipynb`).
+- `models/*.joblib`, `models/*.pkl` — modelos preentrenados (NB, GP, XGBoost, etc.).
+- `models/hotspots_info.csv` — tabla con hotspots detectados y métricas.
+- `models/density_grid.npy`, `models/grid_info.json` — información de la grilla espacial usada en modelos departamentales.
+- `vectores/` — base de datos Chroma persistente (embeddings + metadatos) para el chatbot.
+- `barrios_bucaramanga.geojson` — geometrías de barrios usadas para geocodificación y validación.
+
+## 🧩 Dependencias extra (chatbot / RAG)
+
+Para ejecutar el demo del chatbot adicionalmente instala:
+
+```bash
+pip install sentence-transformers chromadb langchain langchain-community langchain-text-splitters google-generativeai pypdf
 ```
 
-### **Comentarios y Documentación**
+Nota sobre Stan: las secciones de `models_depto.ipynb` que usan modelos Bayesianos en Stan están etiquetadas como opcionales y, por defecto, no se ejecutan en el demo. Para reproducibilidad y velocidad usamos los artefactos en `models/`.
 
-- Usar comentarios cuando la lógica no es obvia
-- Documentar funciones con docstrings
-- Mantener código limpio y auto-explicativo
 
 ## 📝 Notas Importantes
 
@@ -308,7 +304,7 @@ Este proyecto utiliza datos abiertos del Gobierno de Colombia disponibles bajo l
 
 ---
 
-**Última actualización:** Noviembre 20, 2025
+**Última actualización:** Noviembre 27, 2025
 
-**Versión del Análisis:** 1.1
+**Versión del Análisis:** 1.2
 
