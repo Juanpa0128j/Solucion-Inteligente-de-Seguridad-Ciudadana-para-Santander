@@ -292,15 +292,15 @@ Nota sobre Stan: las secciones de `models_depto.ipynb` que usan modelos Bayesian
 
 ## 📄 Licencia
 
-Este proyecto utiliza datos abiertos del Gobierno de Colombia disponibles bajo licencia de datos abiertos.
+Este proyecto utiliza datos abiertos del Gobierno de Colombia disponibles bajo licencia de datos abiertos. El código fuente de este repositorio se publica bajo la licencia MIT; consulte el archivo `LICENSE` en la raíz del proyecto para el texto completo y los términos.
 
 ## 👤 Autor
 
 - **Juan Pablo Mejía Gómez** ([@Juanpa0128j](https://github.com/Juanpa0128j))
 
-- **Sebastián Gómez**
+- **Sebastián Gómez** ([@segomezz] (https://github.com/segomezz))
 
-- **Verónica Pérez**
+- **Verónica Pérez** ([@Veritoo123](https://github.com/Veritoo123))
 
 ---
 
