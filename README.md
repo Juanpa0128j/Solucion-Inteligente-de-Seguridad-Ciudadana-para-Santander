@@ -298,7 +298,7 @@ Este proyecto utiliza datos abiertos del Gobierno de Colombia disponibles bajo l
 
 - **Juan Pablo Mejía Gómez** ([@Juanpa0128j](https://github.com/Juanpa0128j))
 
-- **Sebastián Gómez** ([@segomezz] (https://github.com/segomezz))
+- **Sebastián Gómez** ([@segomezz](https://github.com/segomezz))
 
 - **Verónica Pérez** ([@Veritoo123](https://github.com/Veritoo123))
 
