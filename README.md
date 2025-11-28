@@ -269,6 +269,31 @@ pip install sentence-transformers chromadb langchain langchain-community langcha
 
 Nota sobre Stan: las secciones de `models_depto.ipynb` que usan modelos Bayesianos en Stan están etiquetadas como opcionales y, por defecto, no se ejecutan en el demo. Para reproducibilidad y velocidad usamos los artefactos en `models/`.
 
+## 📊 Dashboard
+
+Como parte del fortalecimiento de las herramientas disponibles para la comunidad, se desarrollaron nuevos dashboards que complementan los ya existentes en el portal oficial de la Gobernación de Santander:  
+https://santander.gov.co/publicaciones/11099/justicia-y-del-derecho/
+
+Estos dashboards presentan información clave sobre los delitos sexuales ocurridos tanto en **Santander** como en **Bucaramanga**, permitiendo una visualización más clara y útil para la toma de decisiones.
+
+---
+
+### 🔹 Delitos sexuales en Bucaramanga
+
+<img src="./Dashboards/DashboardDelitosSexualesBucaramanga.png" width="700">
+
+**Visualizar en Power BI:**  
+https://app.powerbi.com/view?r=eyJrIjoiNjc0ZWYyZTMtOTM0ZC00Y2RiLTk2NTgtZmNhNTE3MmZkMzBkIiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9
+
+---
+
+### 🔹 Delitos sexuales en Santander
+
+<img src="./Dashboards/DelitosSexualesSantander.png" width="700">
+
+**Visualizar en Power BI:**  
+https://app.powerbi.com/view?r=eyJrIjoiMzRmNDg1NDAtY2ZmOS00OGE2LTk5MTctOGU2NDk3OWZjZjM2IiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9
+
 
 ## 📝 Notas Importantes
 
