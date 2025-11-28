@@ -1,0 +1,20 @@
+# --- Framework web ---
+flask
+python-dotenv
+
+# --- Vector store ---
+chromadb
+
+# --- Embeddings ---
+sentence-transformers
+
+# --- PDF loading ---
+langchain-community
+langchain-text-splitters
+pypdf
+
+# --- Google Gemini ---
+google-generativeai>=0.5.4
+langchain-google-genai==1.0.6
+langchain-core>=0.2.5
+langchain>=0.2.11

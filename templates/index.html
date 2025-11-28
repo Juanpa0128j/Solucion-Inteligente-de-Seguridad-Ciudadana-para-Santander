@@ -1,0 +1,104 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            margin: 40px; 
+            background: #f7f7f7; 
+        }
+
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px;
+            max-width: 700px; 
+            margin: auto; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+        }
+
+        /* Título + imagen */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #003366;
+        }
+
+        input[type="text"] { 
+            width: 80%; 
+            padding: 10px; 
+            border-radius: 5px; 
+            border: 1px solid #ccc; 
+        }
+
+        button { 
+            padding: 10px 15px; 
+            border: none; 
+            background: #007bff; 
+            color: white;
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+
+        .respuesta { 
+            margin-top: 25px; 
+            padding: 20px; 
+            background: #eef5ff; 
+            border-left: 4px solid #007bff;
+            border-radius: 5px; 
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .respuesta h3 {
+            margin-top: 0;
+            color: #003366;
+        }
+
+        .respuesta ul {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+
+        <!-- Encabezado con imagen -->
+        <div class="header">
+            <h2>💬 Chatbot para la Seguridad Ciudadana de Santander</h2>
+        </div>
+
+        <!-- Formulario -->
+        <form method="POST">
+            <input type="text" name="mensaje" placeholder="Escribe aquí..." required>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <!-- Respuesta del chatbot -->
+        {% if respuesta %}
+            <div class="respuesta">
+                <strong>Respuesta:</strong><br>
+                {{ respuesta | safe }}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
