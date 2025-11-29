@@ -11,7 +11,7 @@ Cuando el usuario envía un mensaje, Flask llama responder() y lo muestra en pan
 Es totalmente compatible con HTML enriquecido porque no se usa Markdown."""
 
 from flask import Flask, render_template, request
-from chatbot.chatbot import responder
+from chatbot import responder
 import os
 
 app = Flask(__name__)
