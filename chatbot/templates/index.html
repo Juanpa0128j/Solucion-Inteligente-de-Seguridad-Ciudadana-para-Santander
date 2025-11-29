@@ -76,6 +76,15 @@
         .respuesta ul {
             margin-top: 10px;
         }
+
+        /* Botón adicional */
+        .btn-tablero {
+            background: transparent; /* verde */
+            display: block;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +95,11 @@
             <h2>💬 Chatbot para la Seguridad Ciudadana de Santander</h2>
         </div>
 
+        <!-- Botón para ir al tablero -->
+        <a href="https://app.powerbi.com/view?r=eyJrIjoiNjc0ZWYyZTMtOTM0ZC00Y2RiLTk2NTgtZmNhNTE3MmZkMzBkIiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9" class="btn-tablero">
+            <button type="button">📊 Ir al Tablero de Delitos Santander</button>
+        </a>
+        <br>
         <!-- Formulario -->
         <form method="POST">
             <input type="text" name="mensaje" placeholder="Escribe aquí..." required>
