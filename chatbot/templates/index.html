@@ -85,6 +85,14 @@
             text-align: center;
             text-decoration: none;
         }
+        .dashboards {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -96,10 +104,19 @@
         </div>
 
         <!-- Botón para ir al tablero -->
-        <a href="https://app.powerbi.com/view?r=eyJrIjoiNjc0ZWYyZTMtOTM0ZC00Y2RiLTk2NTgtZmNhNTE3MmZkMzBkIiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9" class="btn-tablero">
-            <button type="button">📊 Ir al Tablero de Delitos Santander</button>
-        </a>
-        <br>
+         <div class="dashboards">
+            <div>
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiNjc0ZWYyZTMtOTM0ZC00Y2RiLTk2NTgtZmNhNTE3MmZkMzBkIiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9" class="btn-tablero">
+                    <button type="button">📊 Tablero de Delitos Sexuales Bucaramanga</button>
+                </a>
+            </div>
+            <div>
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiMzRmNDg1NDAtY2ZmOS00OGE2LTk5MTctOGU2NDk3OWZjZjM2IiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9" class="btn-tablero">
+                    <button type="button">📊 Tablero de Delitos Sexuales Santander</button>
+                </a>
+            </div>
+         </div>
+
         <!-- Formulario -->
         <form method="POST">
             <input type="text" name="mensaje" placeholder="Escribe aquí..." required>
