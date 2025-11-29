@@ -263,8 +263,9 @@ Lista rápida de los artefactos más relevantes y sus rutas relativas:
 
 Para ejecutar el demo del chatbot adicionalmente instala:
 
+
 ```bash
-pip install sentence-transformers chromadb langchain langchain-community langchain-text-splitters google-generativeai pypdf
+pip install -r requirements.txt
 ```
 
 Nota sobre Stan: las secciones de `models_depto.ipynb` que usan modelos Bayesianos en Stan están etiquetadas como opcionales y, por defecto, no se ejecutan en el demo. Para reproducibilidad y velocidad usamos los artefactos en `models/`.
@@ -293,6 +294,64 @@ https://app.powerbi.com/view?r=eyJrIjoiNjc0ZWYyZTMtOTM0ZC00Y2RiLTk2NTgtZmNhNTE3M
 
 **Visualizar en Power BI:**  
 https://app.powerbi.com/view?r=eyJrIjoiMzRmNDg1NDAtY2ZmOS00OGE2LTk5MTctOGU2NDk3OWZjZjM2IiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9
+
+# Chatbot para la seguridad de la Ciudadanía de Santander
+
+Chatbot informativo basado en RAG (Retrieval-Augmented Generation) que proporciona información clara y accesible sobre normativa colombiana y rutas de atención en temas de violencia intrafamiliar, violencia sexual, seguridad ciudadana y protección de la niñez.
+
+## Descripción
+
+Este sistema utiliza inteligencia artificial para consultar documentos oficiales y proporcionar respuestas precisas a la ciudadanía de Santander sobre:
+
+- **Violencia intrafamiliar**: Ley 1257 de 2008, Decreto 4799 de 2011, rutas del ICBF y Comisarías de Familia
+- **Violencia sexual**: Ley 1719 de 2014, protocolos de atención VBG
+- **Seguridad ciudadana**: Código Nacional de Seguridad y Convivencia (Ley 1801 de 2016)
+- **Niñez**: Código de Infancia y Adolescencia (Ley 1098 de 2006)
+
+## Arquitectura del Sistema
+
+El proyecto consta de tres componentes principales:
+
+1. **ingesta.py**: Procesa los PDFs y crea la base vectorial
+2. **chatbot.py**: Lógica de recuperación de contexto y generación de respuestas
+3. **app.py**: Interfaz web Flask para interactuar con el chatbot
+
+### Tecnologías Utilizadas
+
+- **LangChain**: Orquestación del pipeline RAG
+- **ChromaDB**: Base de datos vectorial persistente
+- **Sentence-Transformers**: Generación de embeddings (modelo all-mpnet-base-v2)
+- **Google Gemini**: Modelo de lenguaje para generación de respuestas
+- **Flask**: Framework web para la interfaz de usuario
+
+## Documentación
+- [Guía de instalación completa](docs/installation.md)
+-  [Solución de Problemas](docs/problems_sol.md)
+
+## Características Importantes
+
+### Respuestas Responsables
+
+El chatbot está diseñado para:
+- No proporcionar asesoría legal personalizada
+- No hacer juicios ni culpar a víctimas
+- Usar lenguaje empático y respetuoso
+- Incluir mensajes de contención cuando detecta situaciones de riesgo
+- Orientar hacia rutas oficiales de atención
+
+### Formato de Respuestas
+
+Las respuestas se generan en HTML limpio utilizando:
+- `<p>` para párrafos
+- `<ul>` y `<ol>` para listas
+- `<strong>` para énfasis
+- `<br>` para saltos de línea
+
+### Anotaciones
+
+- **Ingesta.py solo se ejecuta una vez**: Después de crear la base vectorial, no es necesario volver a ejecutarlo a menos que se actualicen los documentos fuente
+- **Base persistente**: La carpeta `vectores/` contiene la base de datos y se carga automáticamente al iniciar el chatbot
+- **Sin memoria entre sesiones**: Cada consulta es independiente, no hay historial de conversación
 
 
 ## 📝 Notas Importantes
